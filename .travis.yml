@@ -10,7 +10,7 @@ env:
 
 before_install:
   - export DJANGO_SETTINGS_MODULE=simply_fit.settings
-  - export PYTHONPATH=$HOME/builds/houngj/simply_fit
+  - export PYTHONPATH=/home/travis/builds/houngj/simply_fit
   - export PIP_USE_MIRRORS=true
 
 install:
