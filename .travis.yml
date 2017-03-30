@@ -17,4 +17,4 @@ install:
   - pip install django==$DJANGO --quiet
   
 script:
-  - python manage.py test simply_fit_api
+  - ls
