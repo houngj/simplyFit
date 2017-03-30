@@ -10,11 +10,12 @@ env:
 
 before_install:
   - export DJANGO_SETTINGS_MODULE=simply_fit.settings
-  - export PYTHONPATH=/home/travis/builds/houngj/simply_fit/simply_fit
+  - export PYTHONPATH=/home/travis/builds/houngj/simply_fit/simply_fit/
   - export PIP_USE_MIRRORS=true
 
 install:
   - pip install django==$DJANGO --quiet
   
 script:
+  - ls
   - python manage.py test simply_fit_api
