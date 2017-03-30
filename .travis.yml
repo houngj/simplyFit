@@ -1,0 +1,16 @@
+sudo: required
+
+language: python
+
+python:
+  - 3.4
+
+env:
+  - DJANGO=1.10.6
+  
+install:
+  - pip install -r requirements.txt
+  - pip install django==$DJANGO --quiet
+  
+script:
+  - python manage.py test simply_fit_api
