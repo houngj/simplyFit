@@ -9,8 +9,9 @@ class basicTest(TestCase):
 	def test_create_new_user(self):
 		apiUtil.createUser("BSly", "Bob", "Sly")
 		userBSly = User.objects.get(userName="BSly")
-		self.assertIs(userBSly.userName, "BSly")
-		self.assertIs(userBSly.firstName, "Bob")
-		self.assertIs(userBSly.lastName, "Sly")
+		
+		self.assertEqual(str(userBSly.userName),"BSly")
+		self.assertEqual(str(userBSly.firstName), "Bob")
+		self.assertEqual(str(userBSly.lastName), "Sly")
 		
 		
