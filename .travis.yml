@@ -5,20 +5,10 @@ language: python
 python:
   - 3.4
 
-env:
-  - DJANGO=1.10.6
-
-before_install:
-  - export DJANGO_SETTINGS_MODULE=simply_fit.settings
-  - export PYTHONPATH=/home/travis/builds/houngj/simply_fit/simply_fit/
-  - export PIP_USE_MIRRORS=true
-
-install:
-  - pip install django==$DJANGO --quiet
+services:
+  - docker
   
 script:
-  - cd simply_fit/
-  - python manage.py makemigrations simply_fit_api
-  - python manage.py sqlmigrate simply_fit_api 0001
-  - python manage.py migrate
-  - python manage.py test simply_fit_api
+  - docker build -t joe/simply_fit .
+  - docker run --name=simply_fit --detach=true --restart=always --publish=8001:8000 joe/simply_fit:latest
+  - docker exec simply_fit python manage.py test simply_fit_api
