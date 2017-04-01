@@ -15,8 +15,13 @@ class User(models.Model):
 	firstName = models.CharField(max_length=50)
 	lastName = models.CharField(max_length=50)
 
+	def __str__(self):
+		return self.firstName + " " + self.lastName
+
 class workoutLog(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	date = models.DateTimeField('date worked out')
 	hours = models.IntegerField(default=0)
 
+	def __str__(self):
+		return self.user.userName
