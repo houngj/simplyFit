@@ -5,9 +5,19 @@ from .models import User
 class apiUtil(object):
 	@staticmethod
 	def createUser(userName, firstName, lastName):
-		user = User(userName=userName, firstName=firstName, lastName=lastName)
-		user.save()
-
+		if apiUtil.getUser(userName) == None:
+			user = User(userName=userName, firstName=firstName, lastName=lastName)
+			user.save()
+			return "Success"
+		else:
+			raise KeyError("User exists, please use a different username")
+	@staticmethod
+	def getUser(user):
+		try:
+			user = User.objects.get(userName=user)
+			return user
+		except:
+			return None
 # Create your views here.
 def index(request):
 	return HttpResponse("Hello, world. You're at simply_fit!")
