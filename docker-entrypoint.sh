@@ -1,4 +1,6 @@
 #!/bin/bash
+python manage.py makemigrations simply_fit_api
+python manage.py sqlmigrate simply_fit_api 0001
 python manage.py migrate                  # Apply database migrations
 python manage.py collectstatic --noinput  # Collect static files
 
