@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import User, workoutLog
-import datetime
+
 #API utility functions
 class apiUtil(object):
 
@@ -22,22 +22,42 @@ class apiUtil(object):
 		except:
 			return None
 
-	''' This method add the date and workout hours for a specified user
-		addDateAndWorkoutHours:
-			@params : username: [username; firstName; lastName]
-					  date: dateTime
-					  Hours: integer
+	''' 
+	The purpose of this method is to add date and hours for a specific user. 
+	@param user=string
+		   date=django.util.timezeon
+		   hours=int
+	@return 
+			"success" : if the user was exist
+			error: if the user does not exist
 	'''
 	@staticmethod
 	def addDateAndWorkoutHours(user, date, hours):
 		if(apiUtil.getUser(user) != None):
 			userToUpdate = apiUtil.getUser(user)
-			log = workoutLog(user=userToUpdate, date=date, hours=hours)
-			log.save()
-			return "Success"
+			totalHours = hours
+			try:
+				log = workoutLog.objects.get(user=userToUpdate, date=date)
+				totalHours += log.hours
+				log.delete()
+			except:
+				None
+
+			updateLog = workoutLog(user=userToUpdate, date=date, hours=totalHours)
+			updateLog.save()
+
 		else:
 			raise KeyError("User does not exist! Please add user first")
 
+	'''
+	The purpose of this method is to retreive workout log 
+	@param user=string
+		   date=django.util.timezone
+
+	@return 
+		log = (user, date, hours)
+		error: if the user doesn't exist
+	'''
 	@staticmethod
 	def getUserWorkOutHoursForDate(user, date):
 		if(apiUtil.getUser(user) != None):
