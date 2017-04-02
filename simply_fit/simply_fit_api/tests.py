@@ -8,6 +8,10 @@ class basicTest(TestCase):
 	def test_for_true(self):
 		myUtils = utils()
 		self.assertIs(myUtils.test(), True)
+	'''
+	The purpose of this method is to test apiUtil.createUser method.
+	The test includes creating the user and then checking if user exists in DB.
+	'''
 	def test_create_new_user(self):
 		apiUtil.createUser("BSly", "Bob", "Sly")
 		#userBSly = User.objects.get(userName="BSly")
@@ -17,7 +21,10 @@ class basicTest(TestCase):
 		self.assertEqual(str(userBSly.lastName), "Sly")
 		userBSly.delete()
 		self.assertEqual(None, apiUtil.getUser("BSly"))
-	
+	'''
+	The purpose of this method is to test apiUtil.createUser method
+	The test include creating and existing user and checks if KeyError is raised
+	'''
 	def test_create_existing_user(self):
 		apiUtil.createUser("testCreateExistingUser", "T", "M")
 		self.assertRaises(KeyError, apiUtil.createUser, "testCreateExistingUser", "T", "M")
@@ -53,7 +60,11 @@ class basicTest(TestCase):
 		
 		self.assertEqual(None, apiUtil.getUser("parul"))
 		self.assertRaises(KeyError, apiUtil.getUserWorkOutHoursForDate, "parul", time)
-	
+	'''
+	The purpose of this method is to test apiUtil.deleteLogsByUser method.
+	The test includes creating and user and their worklogs, deleting worklogs,
+	then checks if there are any worklog entries by the user in DB.
+	'''	
 	def test_deleteWorkLogByUser(self):
 		apiUtil.createUser("houngj", "Joe", "Houng")
 		user_joe = apiUtil.getUser("houngj")
@@ -66,6 +77,11 @@ class basicTest(TestCase):
 		user_joe.delete()
 		self.assertEqual(None, apiUtil.getUser("houngj"))
 	
+	'''
+	The purpose of this method is to test apiUtil.deleteUser method.
+	The test include creating the user, creating users worklogs, and
+	checking if both logs and user is deleted from DB
+	'''
 	def test_deleteUser(self):
 		apiUtil.createUser("houngj", "Joe", "Houng")
 		time1 = date(2017,6,24)

@@ -70,7 +70,13 @@ class apiUtil(object):
 				return log
 		else:
 			raise KeyError("User does not exist! Please add User first")
-	
+	'''
+        The purpose of this method is to delete worklogs by user name
+        @param user=string
+
+        @return
+                None
+        '''	
 	@staticmethod
         def deleteLogsByUser(user):
                 targetUser = apiUtil.getUser(user)
@@ -78,7 +84,13 @@ class apiUtil(object):
                         workoutLog.objects.filter(user=targetUser).delete()
                 else:
                         None
-	
+	'''
+        The purpose of this method is to delete user and worklogs by user name
+        @param user=string
+
+        @return
+                None
+        '''
 	@staticmethod
 	def deleteUser(user):
 		if apiUtil.getUser(user) != None:
