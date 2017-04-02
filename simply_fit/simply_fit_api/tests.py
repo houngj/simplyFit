@@ -53,6 +53,7 @@ class basicTest(TestCase):
 		
 		self.assertEqual(None, apiUtil.getUser("parul"))
 		self.assertRaises(KeyError, apiUtil.getUserWorkOutHoursForDate, "parul", time)
+	
 	def test_deleteWorkLogByUser(self):
 		apiUtil.createUser("houngj", "Joe", "Houng")
 		user_joe = apiUtil.getUser("houngj")
@@ -62,5 +63,17 @@ class basicTest(TestCase):
 		apiUtil.addDateAndWorkoutHours("houngj",time2,2)
 		apiUtil.deleteLogsByUser("houngj")
 		self.assertEqual(len(workoutLog.objects.filter(user=user_joe)), 0)
-
+		user_joe.delete()
+		self.assertEqual(None, apiUtil.getUser("houngj"))
+	
+	def test_deleteUser(self):
+		apiUtil.createUser("houngj", "Joe", "Houng")
+		time1 = date(2017,6,24)
+		time2 = date(2017,6,25)
+		apiUtil.addDateAndWorkoutHours("houngj",time1,2)
+		apiUtil.addDateAndWorkoutHours("houngj",time2,2)
+		apiUtil.deleteLogsByUser("houngj")
+		apiUtil.deleteUser("houngj")
+		self.assertEqual(len(workoutLog.objects.filter(user=apiUtil.getUser("houngj"))), 0)
+		self.assertEqual(len(User.objects.filter(userName="houngj")), 0)
 

@@ -71,22 +71,22 @@ class apiUtil(object):
 		else:
 			raise KeyError("User does not exist! Please add User first")
 	
+	@staticmethod
+        def deleteLogsByUser(user):
+                targetUser = apiUtil.getUser(user)
+                if targetUser != None:
+                        workoutLog.objects.filter(user=targetUser).delete()
+                else:
+                        None
 	
 	@staticmethod
 	def deleteUser(user):
 		if apiUtil.getUser(user) != None:
-			deleteLogsByUser(user)
+			apiUtil.deleteLogsByUser(user)
 			apiUtil.getUser(user).delete()
 		else:
 			None
 	
-	@staticmethod
-	def deleteLogsByUser(user):
-		targetUser = apiUtil.getUser(user)
-		if targetUser != None:
-			workoutLog.objects.filter(user=targetUser).delete()
-		else:
-			None
 # Create your views here.
 def index(request):
 	return HttpResponse("Hello, world. You're at simply_fit!")
