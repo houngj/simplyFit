@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.utils import timezone
 from .models import utils, User, workoutLog
 from .views import apiUtil
-
+from datetime import date
 # Create your tests here.
 class basicTest(TestCase):
 	def test_for_true(self):
@@ -53,5 +53,14 @@ class basicTest(TestCase):
 		
 		self.assertEqual(None, apiUtil.getUser("parul"))
 		self.assertRaises(KeyError, apiUtil.getUserWorkOutHoursForDate, "parul", time)
+	def test_deleteWorkLogByUser(self):
+		apiUtil.createUser("houngj", "Joe", "Houng")
+		user_joe = apiUtil.getUser("houngj")
+		time1 = date(2017,6,24)
+		time2 = date(2017,6,25)
+		apiUtil.addDateAndWorkoutHours("houngj",time1,2)
+		apiUtil.addDateAndWorkoutHours("houngj",time2,2)
+		apiUtil.deleteLogsByUser("houngj")
+		self.assertEqual(len(workoutLog.objects.filter(user=user_joe)), 0)
 
 
