@@ -60,7 +60,7 @@ class basicTest(TestCase):
 	confirming that updates were applied
 	'''
 	def test_updateUserInfo(self):
-		apiUtil.createUserInfo("houngj", "Joe", "Houng")
+		apiUtil.createUser("houngj", "Joe", "Houng")
 		apiUtil.updateUserInfo("houngj", "Jerr", "Herng")
 		jerrUser = apiUtil.getUser("houngj")
 		self.assertEqual(str(jerrUser.firstName), "Jerr")
