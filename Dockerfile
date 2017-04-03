@@ -17,8 +17,7 @@ ENV DOCKYARD_SRVHOME=/srv
 # Directory in container for project source files
 ENV DOCKYARD_SRVPROJ=/srv/simply_fit
 
-# Update the default application repository sources list
-RUN apt-get update && apt-get -y upgrade
+# Install only what is needed
 RUN apt-get install -y python python-pip
 
 # Create application subdirectories
