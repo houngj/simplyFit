@@ -55,7 +55,7 @@ class basicTest(TestCase):
 		self.assertRaises(KeyError, apiUtil.getUserWorkOutHoursForDate, "parul", time)
 
 	'''
-	The purpose of this method is to test apiUtil.updateUser method.
+	The purpose of this method is to test apiUtil.updateUserInfo method.
 	The test includes creating a user, updating the users information, and then
 	confirming that updates were applied
 	'''
@@ -67,4 +67,10 @@ class basicTest(TestCase):
 		self.assertEqual(str(jerrUser.lastName), "Herng")
 		jerrUser.delete()
 		self.assertEqual(None, apiUtil.getUser("houngj"))
-
+	
+	'''
+	The purpose of this method is to test apiUtil.updateUserInfo method.
+	The test tries to update a non-existent user which should return a KeyError
+	'''
+	def test_updateNonExistentUserInfo(self):
+		self.assertRaises(KeyError, apiUtil.updateUserInfo, "houngj", "Jerr", "Herng")

@@ -82,11 +82,15 @@ class apiUtil(object):
 	@staticmethod
 	def updateUserInfo(user, new_firstName=None, new_lastName=None):
 		updateUser = apiUtil.getUser(user)
-		if new_firstName != None:
-			updateUser.firstName=new_firstName
-		if new_lastName != None:
-			updateUser.lastName=new_lastName
-		updateUser.save()
+		if updateUser != None:
+			if new_firstName != None:
+				updateUser.firstName=new_firstName
+			if new_lastName != None:
+				updateUser.lastName=new_lastName
+			updateUser.save()
+			return "Success"
+		else:
+			raise KeyError("User does not exist, update failed")
 # Create your views here.
 def index(request):
 	return HttpResponse("Hello, world. You're at simply_fit!")
