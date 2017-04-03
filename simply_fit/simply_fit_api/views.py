@@ -91,6 +91,35 @@ class apiUtil(object):
 			return "Success"
 		else:
 			raise KeyError("User does not exist, update failed")
+        '''
+	The purpose of this method is to delete worklogs by user name
+        @param user=string
+
+        @return
+                None
+        '''	
+	@staticmethod
+        def deleteLogsByUser(user):
+                targetUser = apiUtil.getUser(user)
+                if targetUser != None:
+                        workoutLog.objects.filter(user=targetUser).delete()
+                else:
+                        None
+	'''
+        The purpose of this method is to delete user and worklogs by user name
+        @param user=string
+
+        @return
+                None
+        '''
+	@staticmethod
+	def deleteUser(user):
+		if apiUtil.getUser(user) != None:
+			apiUtil.deleteLogsByUser(user)
+			apiUtil.getUser(user).delete()
+		else:
+			None
+
 # Create your views here.
 def index(request):
 	return HttpResponse("Hello, world. You're at simply_fit!")
