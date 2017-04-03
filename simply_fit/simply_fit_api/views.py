@@ -71,7 +71,28 @@ class apiUtil(object):
 		else:
 			raise KeyError("User does not exist! Please add User first")
 	'''
-        The purpose of this method is to delete worklogs by user name
+	The purpose of this method is to update a users information.
+	@param  user=string
+		new_firstName=string
+		new_lastName=string
+		
+	@return
+		None
+	'''
+	@staticmethod
+	def updateUserInfo(user, new_firstName=None, new_lastName=None):
+		updateUser = apiUtil.getUser(user)
+		if updateUser != None:
+			if new_firstName != None:
+				updateUser.firstName=new_firstName
+			if new_lastName != None:
+				updateUser.lastName=new_lastName
+			updateUser.save()
+			return "Success"
+		else:
+			raise KeyError("User does not exist, update failed")
+        '''
+	The purpose of this method is to delete worklogs by user name
         @param user=string
 
         @return
@@ -98,7 +119,7 @@ class apiUtil(object):
 			apiUtil.getUser(user).delete()
 		else:
 			None
-	
+
 # Create your views here.
 def index(request):
 	return HttpResponse("Hello, world. You're at simply_fit!")
