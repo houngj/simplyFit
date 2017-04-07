@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 class utils(object):
 	def __init__(self):
@@ -9,18 +9,9 @@ class utils(object):
 	def test(self):
 		return True
 
-
-class User(models.Model):
-	userName = models.CharField(max_length=50)
-	firstName = models.CharField(max_length=50)
-	lastName = models.CharField(max_length=50)
-
-	def __str__(self):
-		return self.firstName + " " + self.lastName
-
 class workoutLog(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
-	date = models.DateTimeField('date worked out')
+	date = models.DateField('date worked out')
 	hours = models.IntegerField(default=0)
 
 	def __str__(self):
