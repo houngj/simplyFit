@@ -1,14 +1,15 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import User, workoutLog
+from .models import workoutLog
+from django.contrib.auth.models import User
 
 #API utility functions
 class apiUtil(object):
 
 	@staticmethod
-	def createUser(userName, firstName, lastName):
-		if apiUtil.getUser(userName) == None:
-			user = User(userName=userName, firstName=firstName, lastName=lastName)
+	def createUser(username, email, password):
+		if apiUtil.getUser(username) == None:
+			user = User.objects.create_user(username, email, password)
 			user.save()
 			return "Success"
 		else:
@@ -17,7 +18,7 @@ class apiUtil(object):
 	@staticmethod
 	def getUser(user):
 		try:
-			user = User.objects.get(userName=user)
+			user = User.objects.get(username=user)
 			return user
 		except:
 			return None
@@ -80,13 +81,13 @@ class apiUtil(object):
 		None
 	'''
 	@staticmethod
-	def updateUserInfo(user, new_firstName=None, new_lastName=None):
+	def updateUserInfo(user, new_email=None, new_password=None):
 		updateUser = apiUtil.getUser(user)
 		if updateUser != None:
-			if new_firstName != None:
-				updateUser.firstName=new_firstName
-			if new_lastName != None:
-				updateUser.lastName=new_lastName
+			if new_email != None:
+				updateUser.email=new_email
+			if new_password != None:
+				updateUser.password=new_password
 			updateUser.save()
 			return "Success"
 		else:

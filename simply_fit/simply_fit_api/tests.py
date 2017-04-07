@@ -1,8 +1,9 @@
 from django.test import TestCase
 from django.utils import timezone
-from .models import utils, User, workoutLog
+from .models import utils, workoutLog
 from .views import apiUtil
 from datetime import date
+from django.contrib.auth.models import User
 # Create your tests here.
 class basicTest(TestCase):
 	def test_for_true(self):
@@ -13,12 +14,11 @@ class basicTest(TestCase):
 	The test includes creating the user and then checking if user exists in DB.
 	'''
 	def test_create_new_user(self):
-		apiUtil.createUser("BSly", "Bob", "Sly")
+		apiUtil.createUser("BSly", "Bob@gmail.com", "Sly")
 		#userBSly = User.objects.get(userName="BSly")
 		userBSly = apiUtil.getUser("BSly")
-		self.assertEqual(str(userBSly.userName),"BSly")
-		self.assertEqual(str(userBSly.firstName), "Bob")
-		self.assertEqual(str(userBSly.lastName), "Sly")
+		self.assertEqual(str(userBSly.username),"BSly")
+		self.assertEqual(str(userBSly.email), "Bob@gmail.com")
 		userBSly.delete()
 		self.assertEqual(None, apiUtil.getUser("BSly"))
 	'''
@@ -26,8 +26,8 @@ class basicTest(TestCase):
 	The test include creating and existing user and checks if KeyError is raised
 	'''
 	def test_create_existing_user(self):
-		apiUtil.createUser("testCreateExistingUser", "T", "M")
-		self.assertRaises(KeyError, apiUtil.createUser, "testCreateExistingUser", "T", "M")
+		apiUtil.createUser("testCreateExistingUser", "T@gmail.com", "M")
+		self.assertRaises(KeyError, apiUtil.createUser, "testCreateExistingUser", "T@gmail.com", "M")
 		userTmp = apiUtil.getUser("testCreateExistingUser")
 		userTmp.delete()	
 		self.assertEqual(None, apiUtil.getUser("testCreateExistingUser"))
@@ -41,17 +41,17 @@ class basicTest(TestCase):
 		apiUtil.createUser("parul", "Parul", "Khullar")
 
 		user_parul = apiUtil.getUser("parul")
-		time = timezone.now()
+		time = date.today()
 		
 		apiUtil.addDateAndWorkoutHours("parul", time, 2)
 		log = apiUtil.getUserWorkOutHoursForDate("parul", time)
-		self.assertEqual(str(log.user.userName), "parul")
+		self.assertEqual(str(log.user.username), "parul")
 		self.assertEqual(log.date, time)
 		self.assertEqual(int(log.hours), 2)
 
 		apiUtil.addDateAndWorkoutHours("parul", time, 2)
 		log = apiUtil.getUserWorkOutHoursForDate("parul", time)
-		self.assertEqual(str(log.user.userName), "parul")
+		self.assertEqual(str(log.user.username), "parul")
 		self.assertEqual(log.date, time)
 		self.assertEqual(int(log.hours), 4)
 		
@@ -67,11 +67,11 @@ class basicTest(TestCase):
 	confirming that updates were applied
 	'''
 	def test_updateUserInfo(self):
-		apiUtil.createUser("houngj", "Joe", "Houng")
-		apiUtil.updateUserInfo("houngj", "Jerr", "Herng")
+		apiUtil.createUser("houngj", "sjhoung@gmail.com", "Houng")
+		apiUtil.updateUserInfo("houngj", "jerr@gmail.com", "Herng")
 		jerrUser = apiUtil.getUser("houngj")
-		self.assertEqual(str(jerrUser.firstName), "Jerr")
-		self.assertEqual(str(jerrUser.lastName), "Herng")
+		self.assertEqual(str(jerrUser.email), "jerr@gmail.com")
+		self.assertEqual(str(jerrUser.password), "Herng")
 		jerrUser.delete()
 		self.assertEqual(None, apiUtil.getUser("houngj"))
 	
@@ -112,4 +112,4 @@ class basicTest(TestCase):
 		apiUtil.deleteLogsByUser("houngj")
 		apiUtil.deleteUser("houngj")
 		self.assertEqual(len(workoutLog.objects.filter(user=apiUtil.getUser("houngj"))), 0)
-		self.assertEqual(len(User.objects.filter(userName="houngj")), 0)
+		self.assertEqual(len(User.objects.filter(username="houngj")), 0)
