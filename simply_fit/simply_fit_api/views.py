@@ -87,7 +87,7 @@ class apiUtil(object):
 			if new_email != None:
 				updateUser.email=new_email
 			if new_password != None:
-				updateUser.password=new_password
+				updateUser.set_password(new_password)
 			updateUser.save()
 			return "Success"
 		else:
